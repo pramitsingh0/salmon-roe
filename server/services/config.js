@@ -3,4 +3,11 @@ module.exports = {
   PORT: process.env.PORT || 6001,
   JWT_SECRET: process.env.JWT_SECRET,
   SECRET_SESSION: process.env.SECRET_SESSION,
+  FIREBASE_APIKEY: process.env.FIREBASE_APIKEY,
+  FIREBASE_AUTHDOMAIN: process.env.FIREBASE_AUTHDOMAIN,
+  PROJECT_ID: process.env.PROJECT_ID,
+  STORAGE_BUCKET: process.env.STORAGE_BUCKET,
+  MESSAGING_SENDER_ID: process.env.MESSAGING_SENDER_ID,
+  APP_ID: process.env.APP_ID,
+  MEASUREMENT_ID: process.env.MEASUREMENT_ID,
 };

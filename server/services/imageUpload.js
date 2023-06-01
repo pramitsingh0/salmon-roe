@@ -1,6 +1,7 @@
 const sharp = require("sharp");
 const firebaseStorage = require("firebase/storage");
-const fireStotrage = firebaseStorage.getStorage();
+const firebaseConn = require("./firebaseConnection");
+const fireStorage = firebaseStorage.getStorage(firebaseConn);
 
 function modifyFileName(file) {
   const timestamp = Date.now();
@@ -16,7 +17,7 @@ const imageUpload = async (file, username, folder) => {
     .toBuffer();
 
   const storageRef = firebaseStorage.ref(
-    fireStotrage,
+    fireStorage,
     `${username}/${folder}/${fileName}`
   );
   const metaData = {
