@@ -6,6 +6,8 @@ const dbConnect = require("./services/dbConnection");
 const morgan = require("morgan");
 const { PORT, MONGO_URI, SECRET_SESSION } = require("./services/config");
 const MongoDBStore = require("connect-mongodb-session")(session);
+const authRoutes = require("./routes/authRoutes");
+const bodyParser = require("body-parser");
 
 const app = express();
 
@@ -24,6 +26,8 @@ const store = new MongoDBStore({
 
 app.use(cors());
 app.use(morgan("common"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   session({
     secret: SECRET_SESSION,
@@ -35,6 +39,8 @@ app.use(
 app.get("/", (req, res, next) => {
   res.status(200).send("Demo Endpoint");
 });
+
+app.use("/auth", authRoutes);
 function errorHandler(err, req, res, next) {
   const statusCode = err?.status || 500;
   const message = err?.message || "Internal Server Error";
@@ -42,3 +48,5 @@ function errorHandler(err, req, res, next) {
     error: message,
   });
 }
+
+app.use(errorHandler);
