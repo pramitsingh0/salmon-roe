@@ -11,6 +11,7 @@ const getAllPosts = async (req, res, next) => {
     next(e);
   }
 };
+
 const createPost = async (req, res, next) => {
   try {
     const creator = req.user;
@@ -60,8 +61,42 @@ const editPost = async (req, res, next) => {
   }
 };
 
+const likePosts = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const currUser = req.user;
+    const post = await Post.findById(id);
+    const isLiked = post.likes.get(currUser._id);
+    if (isLiked) {
+      post.likes.delete(currUser._id);
+    } else {
+      post.likes.set(currUser._id, true);
+    }
+    const likedPost = await Post.findByIdAndUpdate(
+      id,
+      { likes: post.likes },
+      { new: true }
+    );
+    res.status(200).json(likedPost);
+  } catch (e) {
+    next(e);
+  }
+};
+
+const getUserPosts = async (req, res, next) => {
+  try {
+    const user = req.user;
+    const posts = await Post.find({ creator: user._id });
+    res.status(200).json(posts);
+  } catch (e) {
+    next(e);
+  }
+};
+
 module.exports = {
   getAllPosts,
   createPost,
   editPost,
+  likePosts,
+  getUserPosts,
 };
