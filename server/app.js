@@ -7,6 +7,7 @@ const morgan = require("morgan");
 const { PORT, MONGO_URI, SECRET_SESSION } = require("./services/config");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const authRoutes = require("./routes/authRoutes");
+const postRoutes = require("./routes/postRoutes");
 const bodyParser = require("body-parser");
 
 const app = express();
@@ -41,6 +42,7 @@ app.get("/", (req, res, next) => {
 });
 
 app.use("/auth", authRoutes);
+app.use("/posts", postRoutes);
 function errorHandler(err, req, res, next) {
   const statusCode = err?.status || 500;
   const message = err?.message || "Internal Server Error";
