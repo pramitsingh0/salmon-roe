@@ -3,12 +3,14 @@ const bcrypt = require("bcrypt");
 const imageUpload = require("../services/imageUpload");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../services/config");
-
+const DEFAULT_AVATAR =
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png";
 const createAccount = async (req, res, next) => {
   try {
     const file = req.file;
     const userData = req.body.user;
-    const downloadUrl = await imageUpload(file, userData.username, "avatar");
+    const downloadUrl =
+      (await imageUpload(file, userData.username, "avatar")) || DEFAULT_AVATAR;
     const passwordHash = await bcrypt.hash(userData.password, 10);
     const newUser = new User({
       ...userData,
@@ -45,7 +47,7 @@ const login = async (req, res, next) => {
     req.session.cookie.token = token;
     return res.status(200).json({
       token: token,
-      ...user,
+      user,
     });
   } catch (e) {
     console.log(e);
