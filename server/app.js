@@ -10,6 +10,7 @@ const authRoutes = require("./routes/authRoutes");
 const postRoutes = require("./routes/postRoutes");
 const bodyParser = require("body-parser");
 const userRouter = require("./routes/userRoutes");
+const commentRouter = require("./routes/commentRoutes");
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.get("/", (req, res, next) => {
 app.use("/auth", authRoutes);
 app.use("/posts", postRoutes);
 app.use("/user", userRouter);
+app.use("/comments", commentRouter);
 
 function errorHandler(err, req, res, next) {
   const statusCode = err?.status || 500;
