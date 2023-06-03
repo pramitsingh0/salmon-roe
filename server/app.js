@@ -9,6 +9,7 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 const authRoutes = require("./routes/authRoutes");
 const postRoutes = require("./routes/postRoutes");
 const bodyParser = require("body-parser");
+const userRouter = require("./routes/userRoutes");
 
 const app = express();
 
@@ -20,6 +21,7 @@ dbConnect()
     console.log(e);
     throw new Error("Connecting to db error");
   });
+
 const store = new MongoDBStore({
   uri: MONGO_URI,
   collection: "sessions",
@@ -37,12 +39,15 @@ app.use(
     store: store,
   })
 );
+
 app.get("/", (req, res, next) => {
   res.status(200).send("Demo Endpoint");
 });
 
 app.use("/auth", authRoutes);
 app.use("/posts", postRoutes);
+app.use("/user", userRouter);
+
 function errorHandler(err, req, res, next) {
   const statusCode = err?.status || 500;
   const message = err?.message || "Internal Server Error";

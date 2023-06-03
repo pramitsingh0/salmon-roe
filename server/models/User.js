@@ -53,6 +53,6 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-userSchema.plugin(mongooseUniqueValidator);
+// userSchema.plugin(mongooseUniqueValidator);
 
 module.exports = mongoose.model("User", userSchema);
