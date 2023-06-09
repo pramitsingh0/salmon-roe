@@ -33,6 +33,9 @@ const userSchema = new mongoose.Schema(
       default:
         "https://t0.gstatic.com/images?q=tbn:ANd9GcSLjgzNXwdx8i6MpWP3v34obkH6E8_MECNh6J8jjvQ45m55Az63",
     },
+    location: {
+      type: String,
+    },
     posts: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Post",

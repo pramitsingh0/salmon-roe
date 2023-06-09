@@ -13,8 +13,32 @@ const getUser = async (req, res, next) => {
     next(e);
   }
 };
+const toggleFollow = async (req, res, next) => {
+  try {
+    const { id, friendId } = req.params;
+    const user = await User.findById(id);
+    const friend = await User.findById(friendId);
+    if (user.following.includes(friendId)) {
+      user.following = user.following.filter(
+        (person) => person._id.toString() != friendId
+      );
+      friend.followers = friend.followers.filter(
+        (person) => person._id.toString() != id
+      );
+    } else {
+      user.following.push(friend);
+      friend.followers.push(user);
+    }
+    const updatedUser = await user.save();
+    await friend.save();
+    res.status(200).send(updatedUser);
+  } catch (e) {
+    next(e);
+  }
+};
 
 module.exports = {
   getCurrentUser,
   getUser,
+  toggleFollow,
 };

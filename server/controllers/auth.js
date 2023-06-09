@@ -8,7 +8,7 @@ const DEFAULT_AVATAR =
 const createAccount = async (req, res, next) => {
   try {
     const file = req.file;
-    const userData = req.body.user;
+    const userData = req.body;
     const downloadUrl =
       (await imageUpload(file, userData.username, "avatar")) || DEFAULT_AVATAR;
     const passwordHash = await bcrypt.hash(userData.password, 10);
@@ -28,13 +28,14 @@ const createAccount = async (req, res, next) => {
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    console.log(email, password);
     const user = await User.findOne({ email: email });
     if (!user) {
-      res.status(401).json({ message: "User not found" });
+      return res.status(401).json({ message: "User not found" });
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      res.status(401).json({ message: "Inavlid Credentials" });
+      return res.status(401).json({ message: "Inavlid Credentials" });
     }
     let token = jwt.sign(
       { userId: user._id, username: user.username },

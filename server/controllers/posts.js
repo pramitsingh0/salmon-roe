@@ -3,7 +3,7 @@ const imageUpload = require("../services/imageUpload");
 
 const getAllPosts = async (req, res, next) => {
   try {
-    const posts = Post.find({});
+    const posts = await Post.find({});
     return res.status(200).json({
       posts,
     });
@@ -93,10 +93,21 @@ const getUserPosts = async (req, res, next) => {
   }
 };
 
+const getFeed = async (req, res, next) => {
+  try {
+    const user = req.user;
+    const posts = await Post.find({ creator: { $in: user.following } });
+    res.status(200).json(posts);
+  } catch (e) {
+    next(e);
+  }
+};
+
 module.exports = {
   getAllPosts,
   createPost,
   editPost,
   likePosts,
   getUserPosts,
+  getFeed,
 };
