@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import NavBar from "@/scenes/NavBar";
 import UserWidget from "@/scenes/widgets/UserWidget";
 import CreatePostWidget from "@/scenes/widgets/CreatePostWidget";
+import PostsWidget from "../widgets/PostsWidget";
 import { useSelector } from "react-redux";
 
 const HomePage = () => {
@@ -33,6 +34,7 @@ const HomePage = () => {
           }}
         >
           <CreatePostWidget profilePath={user.profileImageUrl} />
+          <PostsWidget userId={user._id} />
         </Box>
       </Box>
     </Box>
