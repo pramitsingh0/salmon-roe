@@ -41,10 +41,36 @@ export const newPost = (post, token) => {
     }
   };
 };
+
 export const fetchPosts = (token) => {
   return async (dispatch) => {
     const response = await axios.get(baseUrl, tokenConfig(token));
+    dispatch(setPosts(response.data.posts));
+  };
+};
+
+export const fetchUserPosts = (userId, token) => {
+  return async (dispatch) => {
+    const response = await axios.get(
+      `${baseUrl}/${userId}`,
+      tokenConfig(token)
+    );
     dispatch(setPosts(response.data));
+  };
+};
+
+export const likePost = (postId, token) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.patch(
+        `${baseUrl}/${postId}/like`,
+        null,
+        tokenConfig(token)
+      );
+      dispatch(updatePosts(response.data));
+    } catch (e) {
+      throw new Error(e?.message);
+    }
   };
 };
 export const { setPosts, updatePosts, createPost } = postSlice.actions;
