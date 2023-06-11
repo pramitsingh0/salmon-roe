@@ -1,4 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+const baseUrl = "http://localhost:3001/posts";
+const tokenConfig = (token) => {
+  return {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+};
 
 const postSlice = createSlice({
   name: "posts",
@@ -13,8 +20,32 @@ const postSlice = createSlice({
       );
       return updatedPosts;
     },
+    createPost: (state, action) => {
+      return [action.payload, ...state];
+    },
   },
 });
 
-export const { setPosts, updatePosts } = postSlice.actions;
+export const newPost = (post, token) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(
+        `${baseUrl}/create`,
+        post,
+        tokenConfig(token)
+      );
+      dispatch(createPost(response.data));
+    } catch (e) {
+      console.log(e);
+      throw new Error(e?.message);
+    }
+  };
+};
+export const fetchPosts = (token) => {
+  return async (dispatch) => {
+    const response = await axios.get(baseUrl, tokenConfig(token));
+    dispatch(setPosts(response.data));
+  };
+};
+export const { setPosts, updatePosts, createPost } = postSlice.actions;
 export default postSlice.reducer;

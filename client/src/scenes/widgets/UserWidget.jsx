@@ -3,6 +3,8 @@ import {
   EditOutlined,
   LocationOnOutlined,
   InfoRounded,
+  MaleRounded,
+  FemaleRounded,
 } from "@mui/icons-material";
 import { Box, Typography, Divider, useTheme } from "@mui/material";
 import UserImage from "@/components/UserImage";
@@ -44,6 +46,7 @@ const UserWidget = ({ userId }) => {
     viewedProfile,
     impressions,
     followers,
+    gender,
   } = user;
 
   return (
@@ -87,6 +90,14 @@ const UserWidget = ({ userId }) => {
         <Box display="flex" alignItems="center" gap="1rem">
           <InfoRounded fontSize="large" sx={{ color: main }} />
           <Typography color={medium}>{bio}</Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gap="1rem">
+          {gender == "MALE" ? (
+            <MaleRounded fontSize="large" sx={{ color: main }} />
+          ) : (
+            <FemaleRounded fontSize="large" sx={{ color: main }} />
+          )}
+          <Typography color={medium}>{gender}</Typography>
         </Box>
       </Box>
 
