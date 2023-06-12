@@ -1,6 +1,6 @@
 const express = require("express");
 const {
-  getCurrentUser,
+  getCurrentUserFriends,
   getUser,
   toggleFollow,
 } = require("../controllers/user");
@@ -10,10 +10,15 @@ const {
 } = require("../middleware/userExtractor");
 const userRouter = express.Router();
 
-userRouter.get("/", getCurrentUser);
+userRouter.get(
+  "/friends",
+  tokenExtractor,
+  userExtractor,
+  getCurrentUserFriends
+);
 userRouter.get("/:id", getUser);
-userRouter.put(
-  "/:id/follow/:friendId",
+userRouter.patch(
+  "/follow/:friendId",
   tokenExtractor,
   userExtractor,
   toggleFollow
