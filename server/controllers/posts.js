@@ -3,7 +3,7 @@ const imageUpload = require("../services/imageUpload");
 
 const getAllPosts = async (req, res, next) => {
   try {
-    const posts = await Post.find({});
+    const posts = await Post.find({}).populate("creator");
     return res.status(200).json({
       posts,
     });
@@ -16,12 +16,15 @@ const createPost = async (req, res, next) => {
   try {
     const creator = req.user;
     const file = req.file;
-    const downloadUrl = await imageUpload(file, creator.username, "post");
-    const post = new Post({
-      ...req.body.post,
+    const postObj = {
+      ...req.body,
       creator: creator,
-      imageUrl: downloadUrl,
-    });
+    };
+    if (file) {
+      const downloadUrl = await imageUpload(file, creator.username, "post");
+      postObj.imageurl = downloadUrl;
+    }
+    const post = new Post(postObj);
     creator.posts.push(post);
     const savedPost = await post.save();
     await creator.save();
@@ -76,7 +79,7 @@ const likePosts = async (req, res, next) => {
       id,
       { likes: post.likes },
       { new: true }
-    );
+    ).populate("creator");
     res.status(200).json(likedPost);
   } catch (e) {
     next(e);
@@ -85,8 +88,8 @@ const likePosts = async (req, res, next) => {
 
 const getUserPosts = async (req, res, next) => {
   try {
-    const user = req.user;
-    const posts = await Post.find({ creator: user._id });
+    const { userId } = req.params;
+    const posts = await Post.find({ creator: userId });
     res.status(200).json(posts);
   } catch (e) {
     next(e);
@@ -96,7 +99,9 @@ const getUserPosts = async (req, res, next) => {
 const getFeed = async (req, res, next) => {
   try {
     const user = req.user;
-    const posts = await Post.find({ creator: { $in: user.following } });
+    const posts = await Post.find({
+      creator: { $in: [...user.following, ...user.follwers] },
+    });
     res.status(200).json(posts);
   } catch (e) {
     next(e);
