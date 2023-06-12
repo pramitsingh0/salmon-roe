@@ -1,7 +1,11 @@
 const User = require("../models/User");
 
-const getCurrentUser = (req, res, next) => {
-  return res.status(200).json(req.user);
+const getCurrentUserFriends = async (req, res, next) => {
+  const { followers, following } = await User.findById(req.user._id)
+    .populate("following")
+    .populate("followers");
+  console.log(followers);
+  return res.status(200).json({ friends: [...following, ...followers] });
 };
 
 const getUser = async (req, res, next) => {
@@ -38,7 +42,7 @@ const toggleFollow = async (req, res, next) => {
 };
 
 module.exports = {
-  getCurrentUser,
+  getCurrentUserFriends,
   getUser,
   toggleFollow,
 };
