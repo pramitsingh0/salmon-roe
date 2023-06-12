@@ -15,15 +15,15 @@ const getUser = async (req, res, next) => {
 };
 const toggleFollow = async (req, res, next) => {
   try {
-    const { id, friendId } = req.params;
-    const user = await User.findById(id);
+    const { friendId } = req.params;
+    const user = req.user;
     const friend = await User.findById(friendId);
     if (user.following.includes(friendId)) {
       user.following = user.following.filter(
         (person) => person._id.toString() != friendId
       );
       friend.followers = friend.followers.filter(
-        (person) => person._id.toString() != id
+        (person) => person._id.toString() != user._id.toString()
       );
     } else {
       user.following.push(friend);
