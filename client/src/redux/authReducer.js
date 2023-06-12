@@ -19,6 +19,9 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
     },
+    updateUser: (state, action) => {
+      state.user = action.payload;
+    },
     setLogout: (state) => {
       (state.user = null), (state.token = null);
       window.localStorage.clear();
@@ -46,6 +49,24 @@ export const loginUser = (email, password) => {
     }
   };
 };
+export const setFriends = (friendId, token) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:3001/user/follow/${friendId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch(updateUser(response.data));
+    } catch (e) {
+      throw new Error("Error toggling follow unfollow");
+    }
+  };
+};
 
-export const { setMode, setLogin, setLogout } = authSlice.actions;
+export const { setMode, setLogin, setLogout, updateUser } = authSlice.actions;
 export default authSlice.reducer;

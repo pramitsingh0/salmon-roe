@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
+import { setFriends } from "@/redux/authReducer";
 
 const Person = ({ personId, name, subtitle, userPicturePath }) => {
   const dispatch = useDispatch();
@@ -23,21 +24,6 @@ const Person = ({ personId, name, subtitle, userPicturePath }) => {
   const medium = palette.neutral.medium;
 
   const isFriend = following.find((friend) => friend._id === personId);
-
-  const patchFriend = async () => {
-    const response = await fetch(
-      `http://localhost:3001/users/${_id}/${personId}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = await response.json();
-    dispatch(setFriends({ friends: data }));
-  };
 
   return (
     <FlexBetween>
@@ -69,7 +55,7 @@ const Person = ({ personId, name, subtitle, userPicturePath }) => {
       </FlexBetween>
       {user._id != personId ? (
         <IconButton
-          onClick={() => patchFriend()}
+          onClick={() => dispatch(setFriends(personId, token))}
           sx={{
             backgroundColor: primaryLight,
             p: "0.6rem",
