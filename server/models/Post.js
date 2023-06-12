@@ -9,7 +9,6 @@ const postSchema = new mongoose.Schema(
     imageUrl: {
       type: String,
       default: "",
-      required: true,
     },
     caption: {
       type: String,
@@ -18,6 +17,7 @@ const postSchema = new mongoose.Schema(
     likes: {
       type: Map,
       of: Boolean,
+      default: {},
     },
     comments: {
       type: [mongoose.Schema.Types.ObjectId],
