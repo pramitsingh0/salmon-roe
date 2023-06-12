@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const baseUrl = "http://localhost:3001/auth";
+const baseUrl = "https://animefreak-backend.onrender.com/auth";
 
 const initialState = {
   mode: "light",
@@ -53,7 +53,7 @@ export const setFriends = (friendId, token) => {
   return async (dispatch) => {
     try {
       const response = await axios.patch(
-        `http://localhost:3001/user/follow/${friendId}`,
+        `https://animefreak-backend.onrender.com/user/follow/${friendId}`,
         null,
         {
           headers: {

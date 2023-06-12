@@ -45,7 +45,7 @@ const SignUpForm = () => {
       form.append(value, values[value]);
     }
     const response = await axios.post(
-      "http://localhost:3001/auth/signup",
+      "https://animefreak-backend.onrender.com/auth/signup",
       form,
       {
         headers: {

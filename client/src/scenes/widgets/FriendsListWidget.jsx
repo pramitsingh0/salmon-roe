@@ -15,7 +15,7 @@ const FriendsListWidget = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/user/friends", null, {
+      .get("https://animefreak-backend.onrender.com/user/friends", null, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

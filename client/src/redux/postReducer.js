@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const baseUrl = "http://localhost:3001/posts";
+const baseUrl = "https://animefreak-backend.onrender.com/posts";
 const tokenConfig = (token) => {
   return {
     headers: { Authorization: `Bearer ${token}` },
