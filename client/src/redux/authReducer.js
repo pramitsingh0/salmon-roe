@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const baseUrl = "https://animefreak-backend.onrender.com/auth";
 import { toggleSpinner } from "./spinnerReducer";
 
 const initialState = {
@@ -34,7 +33,7 @@ export const loginUser = (email, password) => {
   return async (dispatch) => {
     try {
       dispatch(toggleSpinner(true));
-      const response = await axios.post(`${baseUrl}/login`, {
+      const response = await axios.post(`/auth/login`, {
         email,
         password,
       });
@@ -55,15 +54,11 @@ export const loginUser = (email, password) => {
 export const setFriends = (friendId, token) => {
   return async (dispatch) => {
     try {
-      const response = await axios.patch(
-        `https://animefreak-backend.onrender.com/user/follow/${friendId}`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.patch(`/user/follow/${friendId}`, null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       dispatch(updateUser(response.data));
     } catch (e) {
       throw new Error("Error toggling follow unfollow");

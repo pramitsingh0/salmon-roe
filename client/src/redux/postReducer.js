@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const baseUrl = "https://animefreak-backend.onrender.com/posts";
 const tokenConfig = (token) => {
   return {
     headers: { Authorization: `Bearer ${token}` },
@@ -30,7 +29,7 @@ export const newPost = (post, token) => {
   return async (dispatch) => {
     try {
       const response = await axios.post(
-        `${baseUrl}/create`,
+        `/posts/create`,
         post,
         tokenConfig(token)
       );
@@ -44,17 +43,14 @@ export const newPost = (post, token) => {
 
 export const fetchPosts = (token) => {
   return async (dispatch) => {
-    const response = await axios.get(baseUrl, tokenConfig(token));
+    const response = await axios.get("/posts", tokenConfig(token));
     dispatch(setPosts(response.data.posts));
   };
 };
 
 export const fetchUserPosts = (userId, token) => {
   return async (dispatch) => {
-    const response = await axios.get(
-      `${baseUrl}/${userId}`,
-      tokenConfig(token)
-    );
+    const response = await axios.get(`/posts/${userId}`, tokenConfig(token));
     dispatch(setPosts(response.data));
   };
 };
@@ -63,7 +59,7 @@ export const likePost = (postId, token) => {
   return async (dispatch) => {
     try {
       const response = await axios.patch(
-        `${baseUrl}/${postId}/like`,
+        `/posts/${postId}/like`,
         null,
         tokenConfig(token)
       );
