@@ -25,9 +25,7 @@ const UserWidget = ({ userId }) => {
   const main = palette.neutral.main;
 
   const getUser = async () => {
-    const response = await axios.get(
-      `https://animefreak-backend.onrender.com/user/${userId}`
-    );
+    const response = await axios.get(`/user/${userId}`);
     const data = response.data;
     setUser(data);
   };

@@ -27,7 +27,6 @@ const PostWidget = ({ post }) => {
   const handleLike = () => {
     dispatch(likePost(post._id, token));
   };
-  console.log(post.creator);
 
   return (
     <WidgetWrapper m="2rem 0">

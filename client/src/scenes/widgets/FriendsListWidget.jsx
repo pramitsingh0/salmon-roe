@@ -2,12 +2,10 @@ import { Box, Typography, useTheme } from "@mui/material";
 import Person from "@/components/Person";
 import WidgetWrapper from "@/components/WidgetWrapper";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setFriends } from "@/redux/authReducer";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 const FriendsListWidget = () => {
-  const dispatch = useDispatch();
   const { palette } = useTheme();
   const auth = useSelector((state) => state.auth);
   const token = auth.token;
@@ -15,16 +13,14 @@ const FriendsListWidget = () => {
 
   useEffect(() => {
     axios
-      .get("https://animefreak-backend.onrender.com/user/friends", null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      .get("/user/friends", {
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => setFriends(response.data))
       .catch((e) => {
         throw new Error(e?.message);
       });
-  }, [token, friends]);
+  }, [token]);
 
   return (
     <WidgetWrapper>

@@ -14,8 +14,6 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     }
   }, [dispatch, token, userId, isProfile]);
   const posts = useSelector((state) => state.posts);
-  const hello = [1, 2, 3];
-  console.log(hello);
 
   return (
     <>

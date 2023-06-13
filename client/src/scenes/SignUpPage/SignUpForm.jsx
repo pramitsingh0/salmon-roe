@@ -44,15 +44,11 @@ const SignUpForm = () => {
     for (let value in values) {
       form.append(value, values[value]);
     }
-    const response = await axios.post(
-      "https://animefreak-backend.onrender.com/auth/signup",
-      form,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const response = await axios.post("/auth/signup", form, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     navigate("/");
   };
   return (
