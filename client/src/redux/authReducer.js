@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 const baseUrl = "https://animefreak-backend.onrender.com/auth";
+import { toggleSpinner } from "./spinnerReducer";
 
 const initialState = {
   mode: "light",
@@ -32,6 +33,7 @@ const authSlice = createSlice({
 export const loginUser = (email, password) => {
   return async (dispatch) => {
     try {
+      dispatch(toggleSpinner(true));
       const response = await axios.post(`${baseUrl}/login`, {
         email,
         password,
@@ -39,6 +41,7 @@ export const loginUser = (email, password) => {
       dispatch(
         setLogin({ user: response.data.user, token: response.data.token })
       );
+      dispatch(toggleSpinner(false));
       window.localStorage.setItem(
         "loggedUser",
         JSON.stringify(response.data.user)
