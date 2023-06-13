@@ -4,7 +4,7 @@ const User = require("../models/User");
 const tokenExtractor = (req, res, next) => {
   const authorization = req.headers.authorization;
   if (!authorization) {
-    res.status(401).json({
+    return res.status(401).json({
       error: "User Unauthorized",
     });
   }
@@ -23,7 +23,7 @@ const userExtractor = async (req, res, next) => {
     next();
   } catch (e) {
     console.log(e);
-    res.status(401).json({
+    return res.status(401).json({
       error: "User Unauthorized/User not Found",
     });
   }
