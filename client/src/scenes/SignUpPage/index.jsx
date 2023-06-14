@@ -1,9 +1,18 @@
-import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
+import { Box, Typography, useTheme, CircularProgress } from "@mui/material";
 import SignUpForm from "./SignUpForm";
+import { useSelector } from "react-redux";
 const SignUpPage = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery("(max-width: 700px)");
-  const isTablet = useMediaQuery("(min-width: 800px) and (max-width: 1000px)");
+  const spinner = useSelector((state) => state.spinner);
+  if (spinner) {
+    return (
+      <Box
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
   return (
     <Box>
       <Box

@@ -4,7 +4,9 @@ const spinnerSlice = createSlice({
   name: "spinner",
   initialState: false,
   reducers: {
-    toggleSpinner: (state, action) => action.payload,
+    toggleSpinner: (state, action) => {
+      return action.payload;
+    },
   },
 });
 

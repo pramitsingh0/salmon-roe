@@ -3,7 +3,13 @@ import {
   PersonAddOutlined,
   PersonRemoveOutlined,
 } from "@mui/icons-material";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  IconButton,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
@@ -15,7 +21,8 @@ const Person = ({ personId, name, subtitle, userPicturePath }) => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
-  const following = user.following;
+  const spinner = useSelector((state) => state.spinner);
+  const friends = user.friends;
 
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
@@ -23,7 +30,7 @@ const Person = ({ personId, name, subtitle, userPicturePath }) => {
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
 
-  const isFriend = following.find((friend) => friend._id === personId);
+  const isFriend = friends.find((friend) => friend._id === personId);
 
   return (
     <FlexBetween>
@@ -53,34 +60,42 @@ const Person = ({ personId, name, subtitle, userPicturePath }) => {
           </Typography>
         </Box>
       </FlexBetween>
-      {user._id != personId ? (
-        <IconButton
-          onClick={() => dispatch(setFriends(personId, token))}
-          sx={{
-            backgroundColor: primaryLight,
-            p: "0.6rem",
-            width: "40px",
-            height: "40px",
-          }}
-        >
-          {isFriend ? (
-            <PersonRemoveOutlined sx={{ color: primaryDark }} />
-          ) : (
-            <PersonAddOutlined sx={{ color: primaryDark }} />
-          )}
-        </IconButton>
+      {spinner ? (
+        <Box>
+          <CircularProgress />
+        </Box>
       ) : (
-        <IconButton
-          onClick={() => console.log("Edit post TODO")}
-          sx={{
-            backgroundColor: primaryLight,
-            p: "0.6rem",
-            width: "40px",
-            height: "40px",
-          }}
-        >
-          <EditSharp sx={{ color: primaryDark }} />
-        </IconButton>
+        <div>
+          {user._id != personId ? (
+            <IconButton
+              onClick={() => dispatch(setFriends(personId, token))}
+              sx={{
+                backgroundColor: primaryLight,
+                p: "0.6rem",
+                width: "40px",
+                height: "40px",
+              }}
+            >
+              {isFriend ? (
+                <PersonRemoveOutlined sx={{ color: primaryDark }} />
+              ) : (
+                <PersonAddOutlined sx={{ color: primaryDark }} />
+              )}
+            </IconButton>
+          ) : (
+            <IconButton
+              onClick={() => console.log("Edit post TODO")}
+              sx={{
+                backgroundColor: primaryLight,
+                p: "0.6rem",
+                width: "40px",
+                height: "40px",
+              }}
+            >
+              <EditSharp sx={{ color: primaryDark }} />
+            </IconButton>
+          )}
+        </div>
       )}
     </FlexBetween>
   );

@@ -1,25 +1,33 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, CircularProgress, Typography, useTheme } from "@mui/material";
 import Person from "@/components/Person";
 import WidgetWrapper from "@/components/WidgetWrapper";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { toggleSpinner } from "@/redux/spinnerReducer";
 
 const FriendsListWidget = () => {
+  const dispatch = useDispatch();
   const { palette } = useTheme();
   const auth = useSelector((state) => state.auth);
+  const spinner = useSelector((state) => state.spinner);
   const token = auth.token;
   const [friends, setFriends] = useState([]);
 
   useEffect(() => {
+    dispatch(toggleSpinner(true));
     axios
       .get("/user/friends", {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then((response) => setFriends(response.data))
+      .then((response) => {
+        setFriends(response.data);
+      })
       .catch((e) => {
+        console.log("errror fetching friend lsit");
         throw new Error(e?.message);
       });
+    dispatch(toggleSpinner(false));
   }, [token]);
 
   return (

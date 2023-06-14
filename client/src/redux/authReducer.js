@@ -31,8 +31,8 @@ const authSlice = createSlice({
 
 export const loginUser = (email, password) => {
   return async (dispatch) => {
+    dispatch(toggleSpinner(true));
     try {
-      dispatch(toggleSpinner(true));
       const response = await axios.post(`/auth/login`, {
         email,
         password,
@@ -40,7 +40,6 @@ export const loginUser = (email, password) => {
       dispatch(
         setLogin({ user: response.data.user, token: response.data.token })
       );
-      dispatch(toggleSpinner(false));
       window.localStorage.setItem(
         "loggedUser",
         JSON.stringify(response.data.user)
@@ -48,18 +47,23 @@ export const loginUser = (email, password) => {
       window.localStorage.setItem("token", JSON.stringify(response.data.token));
     } catch (e) {
       throw new Error(e.message);
+    } finally {
+      dispatch(toggleSpinner(false));
     }
   };
 };
 export const setFriends = (friendId, token) => {
   return async (dispatch) => {
     try {
+      dispatch(toggleSpinner(true));
       const response = await axios.patch(`/user/follow/${friendId}`, null, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response.data);
       dispatch(updateUser(response.data));
+      dispatch(toggleSpinner(false));
     } catch (e) {
       throw new Error("Error toggling follow unfollow");
     }

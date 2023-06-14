@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toggleSpinner } from "./spinnerReducer";
 const tokenConfig = (token) => {
   return {
     headers: { Authorization: `Bearer ${token}` },
@@ -43,15 +44,23 @@ export const newPost = (post, token) => {
 
 export const fetchPosts = (token) => {
   return async (dispatch) => {
+    dispatch(toggleSpinner(true));
     const response = await axios.get("/posts", tokenConfig(token));
     dispatch(setPosts(response.data.posts));
+    dispatch(toggleSpinner(false));
   };
 };
 
 export const fetchUserPosts = (userId, token) => {
   return async (dispatch) => {
-    const response = await axios.get(`/posts/${userId}`, tokenConfig(token));
-    dispatch(setPosts(response.data));
+    try {
+      dispatch(toggleSpinner(true));
+      const response = await axios.get(`/posts/${userId}`, tokenConfig(token));
+      dispatch(setPosts(response.data));
+      dispatch(toggleSpinner(false));
+    } catch (e) {
+      throw new Error("Error Fetching Posts");
+    }
   };
 };
 

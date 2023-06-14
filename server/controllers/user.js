@@ -1,11 +1,12 @@
 const User = require("../models/User");
 
 const getCurrentUserFriends = async (req, res, next) => {
-  const { followers, following } = await User.findById(req.user._id)
-    .populate("following")
-    .populate("followers");
-  console.log(followers);
-  return res.status(200).json({ friends: [...following, ...followers] });
+  try {
+    const { friends } = await User.findById(req.user._id).populate("friends");
+    res.status(200).json(friends);
+  } catch (e) {
+    return next(e);
+  }
 };
 
 const getUser = async (req, res, next) => {
@@ -22,16 +23,16 @@ const toggleFollow = async (req, res, next) => {
     const { friendId } = req.params;
     const user = req.user;
     const friend = await User.findById(friendId);
-    if (user.following.includes(friendId)) {
-      user.following = user.following.filter(
+    if (user.friends.includes(friendId)) {
+      user.friends = user.friends.filter(
         (person) => person._id.toString() != friendId
       );
-      friend.followers = friend.followers.filter(
+      friend.friends = friend.friends.filter(
         (person) => person._id.toString() != user._id.toString()
       );
     } else {
-      user.following.push(friend);
-      friend.followers.push(user);
+      user.friends.push(friend);
+      friend.friends.push(user);
     }
     const updatedUser = await user.save();
     await friend.save();

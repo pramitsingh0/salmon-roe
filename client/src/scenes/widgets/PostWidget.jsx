@@ -4,7 +4,14 @@ import {
   FavoriteOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
-import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Divider,
+  IconButton,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import FlexBetween from "@/components/FlexBetween";
 import WidgetWrapper from "@/components/WidgetWrapper";
 import { useState } from "react";
@@ -23,7 +30,7 @@ const PostWidget = ({ post }) => {
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
-  const primary = palette.neutral.main;
+  const red = palette.neutral.red;
   const handleLike = () => {
     dispatch(likePost(post._id, token));
   };
@@ -53,7 +60,7 @@ const PostWidget = ({ post }) => {
           <FlexBetween gap="0.3rem">
             <IconButton onClick={handleLike} sx={{ gap: "0.3rem" }}>
               {isLiked ? (
-                <FavoriteOutlined sx={{ color: primary }} />
+                <FavoriteOutlined sx={{ color: red }} />
               ) : (
                 <FavoriteBorderOutlined />
               )}

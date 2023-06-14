@@ -48,6 +48,7 @@ export const themeSettings = (mode) => {
               mediumMain: colorTokens.grey[300],
               medium: colorTokens.grey[400],
               light: colorTokens.grey[700],
+              red: "#fb3958",
             },
             background: {
               default: colorTokens.grey[900],
@@ -67,6 +68,7 @@ export const themeSettings = (mode) => {
               mediumMain: colorTokens.grey[400],
               medium: colorTokens.grey[300],
               light: colorTokens.grey[50],
+              red: "#fb3958",
             },
             background: {
               default: colorTokens.grey[10],

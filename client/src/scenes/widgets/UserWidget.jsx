@@ -41,11 +41,12 @@ const UserWidget = ({ userId }) => {
   const {
     firstName,
     lastName,
+    username,
     location,
     bio,
     viewedProfile,
     impressions,
-    followers,
+    friends,
     gender,
   } = user;
 
@@ -73,7 +74,8 @@ const UserWidget = ({ userId }) => {
             >
               {firstName} {lastName}
             </Typography>
-            <Typography color={medium}>{followers.length} followers</Typography>
+            <Typography color={medium}>{username}</Typography>
+            <Typography color={medium}>{friends.length} friends</Typography>
           </Box>
         </FlexBetween>
         <ManageAccountsOutlined />
