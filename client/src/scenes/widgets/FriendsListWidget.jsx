@@ -10,7 +10,6 @@ const FriendsListWidget = () => {
   const dispatch = useDispatch();
   const { palette } = useTheme();
   const auth = useSelector((state) => state.auth);
-  const spinner = useSelector((state) => state.spinner);
   const token = auth.token;
   const [friends, setFriends] = useState([]);
 

@@ -39,18 +39,15 @@ const CreatePostWidget = ({ profilePath }) => {
   const mediumMain = palette.neutral.mediumMain;
 
   const handlePost = async () => {
-    dispatch(toggleSpinner(true));
     const formData = new FormData();
     formData.append("caption", post);
     if (image) {
       formData.append("post", image);
     }
     dispatch(newPost(formData, token));
-    dispatch(toggleSpinner(false));
     setImage(null);
     setPost("");
   };
-  const spinner = useSelector((state) => state.spinner);
 
   return (
     <WidgetWrapper>
@@ -152,29 +149,17 @@ const CreatePostWidget = ({ profilePath }) => {
           </FlexBetween>
         )}
 
-        {spinner ? (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <CircularProgress />
-          </Box>
-        ) : (
-          <Button
-            disabled={!post}
-            onClick={handlePost}
-            sx={{
-              color: palette.background.alt,
-              backgroundColor: palette.primary.main,
-              borderRadius: "3rem",
-            }}
-          >
-            POST
-          </Button>
-        )}
+        <Button
+          disabled={!post}
+          onClick={handlePost}
+          sx={{
+            color: palette.background.alt,
+            backgroundColor: palette.primary.main,
+            borderRadius: "3rem",
+          }}
+        >
+          POST
+        </Button>
       </FlexBetween>
     </WidgetWrapper>
   );

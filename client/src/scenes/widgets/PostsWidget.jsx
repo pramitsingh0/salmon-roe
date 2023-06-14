@@ -2,8 +2,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts, fetchUserPosts } from "@/redux/postReducer";
 import PostWidget from "./PostWidget";
-import { toggleSpinner } from "@/redux/spinnerReducer";
-import { CircularProgress, Box } from "@mui/material";
 
 const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
@@ -17,15 +15,6 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     }
   }, [dispatch, token, userId, isProfile]);
   const posts = useSelector((state) => state.posts);
-  if (spinner) {
-    return (
-      <Box
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
 
   return (
     <>

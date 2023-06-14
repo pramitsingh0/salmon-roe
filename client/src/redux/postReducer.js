@@ -28,6 +28,7 @@ const postSlice = createSlice({
 
 export const newPost = (post, token) => {
   return async (dispatch) => {
+    dispatch(toggleSpinner(true));
     try {
       const response = await axios.post(
         `/posts/create`,
@@ -38,6 +39,8 @@ export const newPost = (post, token) => {
     } catch (e) {
       console.log(e);
       throw new Error(e?.message);
+    } finally {
+      dispatch(toggleSpinner(false));
     }
   };
 };
@@ -66,6 +69,7 @@ export const fetchUserPosts = (userId, token) => {
 
 export const likePost = (postId, token) => {
   return async (dispatch) => {
+    dispatch(toggleSpinner(true));
     try {
       const response = await axios.patch(
         `/posts/${postId}/like`,
@@ -75,6 +79,8 @@ export const likePost = (postId, token) => {
       dispatch(updatePosts(response.data));
     } catch (e) {
       throw new Error(e?.message);
+    } finally {
+      dispatch(toggleSpinner(false));
     }
   };
 };

@@ -21,7 +21,6 @@ const Person = ({ personId, name, subtitle, userPicturePath }) => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
-  const spinner = useSelector((state) => state.spinner);
   const friends = user.friends;
 
   const { palette } = useTheme();
@@ -60,43 +59,37 @@ const Person = ({ personId, name, subtitle, userPicturePath }) => {
           </Typography>
         </Box>
       </FlexBetween>
-      {spinner ? (
-        <Box>
-          <CircularProgress />
-        </Box>
-      ) : (
-        <div>
-          {user._id != personId ? (
-            <IconButton
-              onClick={() => dispatch(setFriends(personId, token))}
-              sx={{
-                backgroundColor: primaryLight,
-                p: "0.6rem",
-                width: "40px",
-                height: "40px",
-              }}
-            >
-              {isFriend ? (
-                <PersonRemoveOutlined sx={{ color: primaryDark }} />
-              ) : (
-                <PersonAddOutlined sx={{ color: primaryDark }} />
-              )}
-            </IconButton>
-          ) : (
-            <IconButton
-              onClick={() => console.log("Edit post TODO")}
-              sx={{
-                backgroundColor: primaryLight,
-                p: "0.6rem",
-                width: "40px",
-                height: "40px",
-              }}
-            >
-              <EditSharp sx={{ color: primaryDark }} />
-            </IconButton>
-          )}
-        </div>
-      )}
+      <div>
+        {user._id != personId ? (
+          <IconButton
+            onClick={() => dispatch(setFriends(personId, token))}
+            sx={{
+              backgroundColor: primaryLight,
+              p: "0.6rem",
+              width: "40px",
+              height: "40px",
+            }}
+          >
+            {isFriend ? (
+              <PersonRemoveOutlined sx={{ color: primaryDark }} />
+            ) : (
+              <PersonAddOutlined sx={{ color: primaryDark }} />
+            )}
+          </IconButton>
+        ) : (
+          <IconButton
+            onClick={() => console.log("Edit post TODO")}
+            sx={{
+              backgroundColor: primaryLight,
+              p: "0.6rem",
+              width: "40px",
+              height: "40px",
+            }}
+          >
+            <EditSharp sx={{ color: primaryDark }} />
+          </IconButton>
+        )}
+      </div>
     </FlexBetween>
   );
 };
