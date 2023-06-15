@@ -19,7 +19,6 @@ global.XMLHttpRequest = require("xhr2");
 router.get("/", tokenExtractor, userExtractor, getAllPosts);
 router.get("/:userId", tokenExtractor, userExtractor, getUserPosts);
 router.post("/create", tokenExtractor, userExtractor, upload, createPost);
-router.put("/:id/edit", tokenExtractor, userExtractor, upload, editPost);
 router.patch("/:id/like", tokenExtractor, userExtractor, likePosts);
 
 module.exports = router;
