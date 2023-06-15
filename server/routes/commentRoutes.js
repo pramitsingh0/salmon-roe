@@ -6,6 +6,11 @@ const {
 const { createNewComment } = require("../controllers/comments");
 const commentRouter = express.Router();
 
-commentRouter.post("/new", tokenExtractor, userExtractor, createNewComment);
+commentRouter.post(
+  "/new/:postId",
+  tokenExtractor,
+  userExtractor,
+  createNewComment
+);
 
 module.exports = commentRouter;
