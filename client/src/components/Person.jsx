@@ -1,4 +1,5 @@
 import {
+  DeleteSweep,
   EditSharp,
   PersonAddOutlined,
   PersonRemoveOutlined,
@@ -15,7 +16,7 @@ const Person = ({ personId, name, subtitle, userPicturePath }) => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
-  const following = user.following;
+  const friends = user.friends;
 
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
@@ -23,7 +24,7 @@ const Person = ({ personId, name, subtitle, userPicturePath }) => {
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
 
-  const isFriend = following.find((friend) => friend._id === personId);
+  const isFriend = friends.find((friend) => friend._id === personId);
 
   return (
     <FlexBetween>
@@ -53,35 +54,37 @@ const Person = ({ personId, name, subtitle, userPicturePath }) => {
           </Typography>
         </Box>
       </FlexBetween>
-      {user._id != personId ? (
-        <IconButton
-          onClick={() => dispatch(setFriends(personId, token))}
-          sx={{
-            backgroundColor: primaryLight,
-            p: "0.6rem",
-            width: "40px",
-            height: "40px",
-          }}
-        >
-          {isFriend ? (
-            <PersonRemoveOutlined sx={{ color: primaryDark }} />
-          ) : (
-            <PersonAddOutlined sx={{ color: primaryDark }} />
-          )}
-        </IconButton>
-      ) : (
-        <IconButton
-          onClick={() => console.log("Edit post TODO")}
-          sx={{
-            backgroundColor: primaryLight,
-            p: "0.6rem",
-            width: "40px",
-            height: "40px",
-          }}
-        >
-          <EditSharp sx={{ color: primaryDark }} />
-        </IconButton>
-      )}
+      <div>
+        {user._id != personId ? (
+          <IconButton
+            onClick={() => dispatch(setFriends(personId, token))}
+            sx={{
+              backgroundColor: primaryLight,
+              p: "0.6rem",
+              width: "40px",
+              height: "40px",
+            }}
+          >
+            {isFriend ? (
+              <PersonRemoveOutlined sx={{ color: primaryDark }} />
+            ) : (
+              <PersonAddOutlined sx={{ color: primaryDark }} />
+            )}
+          </IconButton>
+        ) : (
+          <IconButton
+            onClick={() => console.log("Edit post TODO")}
+            sx={{
+              backgroundColor: primaryLight,
+              p: "0.6rem",
+              width: "40px",
+              height: "40px",
+            }}
+          >
+            <DeleteSweep sx={{ color: primaryDark }} />
+          </IconButton>
+        )}
+      </div>
     </FlexBetween>
   );
 };

@@ -25,9 +25,7 @@ const UserWidget = ({ userId }) => {
   const main = palette.neutral.main;
 
   const getUser = async () => {
-    const response = await axios.get(
-      `https://animefreak-backend.onrender.com/user/${userId}`
-    );
+    const response = await axios.get(`/user/${userId}`);
     const data = response.data;
     setUser(data);
   };
@@ -43,11 +41,12 @@ const UserWidget = ({ userId }) => {
   const {
     firstName,
     lastName,
+    username,
     location,
     bio,
     viewedProfile,
     impressions,
-    followers,
+    friends,
     gender,
   } = user;
 
@@ -75,7 +74,8 @@ const UserWidget = ({ userId }) => {
             >
               {firstName} {lastName}
             </Typography>
-            <Typography color={medium}>{followers.length} followers</Typography>
+            <Typography color={medium}>{username}</Typography>
+            <Typography color={medium}>{friends.length} friends</Typography>
           </Box>
         </FlexBetween>
         <ManageAccountsOutlined />

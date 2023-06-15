@@ -1,10 +1,10 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, CircularProgress, Typography, useTheme } from "@mui/material";
 import Person from "@/components/Person";
 import WidgetWrapper from "@/components/WidgetWrapper";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setFriends } from "@/redux/authReducer";
 import axios from "axios";
+import { toggleSpinner } from "@/redux/spinnerReducer";
 
 const FriendsListWidget = () => {
   const dispatch = useDispatch();
@@ -14,17 +14,20 @@ const FriendsListWidget = () => {
   const [friends, setFriends] = useState([]);
 
   useEffect(() => {
+    dispatch(toggleSpinner(true));
     axios
-      .get("https://animefreak-backend.onrender.com/user/friends", null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      .get("/user/friends", {
+        headers: { Authorization: `Bearer ${token}` },
       })
-      .then((response) => setFriends(response.data))
+      .then((response) => {
+        setFriends(response.data);
+      })
       .catch((e) => {
+        console.log("errror fetching friend lsit");
         throw new Error(e?.message);
       });
-  }, [token, friends]);
+    dispatch(toggleSpinner(false));
+  }, [token]);
 
   return (
     <WidgetWrapper>

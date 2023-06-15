@@ -3,7 +3,7 @@ const imageUpload = require("../services/imageUpload");
 
 const getAllPosts = async (req, res, next) => {
   try {
-    const posts = await Post.find({}).populate("creator");
+    const posts = await Post.find({}).populate("creator").populate("comments");
     return res.status(200).json({
       posts,
     });
@@ -34,31 +34,11 @@ const createPost = async (req, res, next) => {
   }
 };
 
-const editPost = async (req, res, next) => {
+const deletePost = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const user = req.user;
-    const userId = user._id.toString();
-    const post = await Post.findById(id);
-    const creatorId = post.creator._id.toString();
-    let downloadUrl = "";
-    if (userId != creatorId) {
-      return res.status(401).json({
-        error: "Authorization Error",
-      });
-    }
-    const updatedContent = req.body.post;
-    const updatedFile = req.file;
-    if (updatedFile) {
-      downloadUrl = await imageUpload(updatedFile, user.username, "post");
-    }
-    if (downloadUrl) {
-      updatedContent.imageUrl = downloadUrl;
-    }
-    const updatedPost = await Post.findByIdAndUpdate(id, updatedContent, {
-      new: true,
-    });
-    res.status(200).json(updatedPost);
+    await Post.findByIdAndDelete(id);
+    res.status(200);
   } catch (e) {
     next(e);
   }
@@ -100,7 +80,7 @@ const getFeed = async (req, res, next) => {
   try {
     const user = req.user;
     const posts = await Post.find({
-      creator: { $in: [...user.following, ...user.follwers] },
+      creator: { $in: user.friends },
     });
     res.status(200).json(posts);
   } catch (e) {
@@ -111,7 +91,7 @@ const getFeed = async (req, res, next) => {
 module.exports = {
   getAllPosts,
   createPost,
-  editPost,
+  deletePost,
   likePosts,
   getUserPosts,
   getFeed,

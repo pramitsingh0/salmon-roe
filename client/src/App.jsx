@@ -3,7 +3,7 @@ import LoginPage from "@/scenes/LoginPage";
 import ProfilePage from "@/scenes/ProfilePage";
 import SignUpPage from "@/scenes/SignUpPage";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { useTheme } from "@mui/material";
+import { useTheme, Box } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";

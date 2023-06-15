@@ -5,17 +5,23 @@ const createNewComment = async (req, res, next) => {
   try {
     const { postId } = req.params;
     const post = await Post.findById(postId);
-    const commentContent = req.body;
+    const commentContent = req.body.comment;
     const newComment = new Comments({
       post: post,
       comment: commentContent,
       commenter: req.user,
     });
     post.comments.push(newComment);
-    const createdComment = await newComment.save();
+    await newComment.save();
     await post.save();
-    res.status(201).json(createdComment);
+
+    const updatedPost = await Post.findById(post._id)
+      .populate("creator")
+      .populate("comments");
+
+    res.status(201).json(updatedPost);
   } catch (e) {
+    console.log(e);
     next(e);
   }
 };

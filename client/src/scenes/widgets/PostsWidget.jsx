@@ -6,6 +6,7 @@ import PostWidget from "./PostWidget";
 const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
+  const spinner = useSelector((state) => state.spinner);
   useEffect(() => {
     if (isProfile) {
       dispatch(fetchUserPosts(userId, token));
@@ -14,8 +15,6 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     }
   }, [dispatch, token, userId, isProfile]);
   const posts = useSelector((state) => state.posts);
-  const hello = [1, 2, 3];
-  console.log(hello);
 
   return (
     <>

@@ -4,16 +4,26 @@ import {
   FavoriteOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
-import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Divider,
+  IconButton,
+  Typography,
+  useTheme,
+  Button,
+} from "@mui/material";
 import FlexBetween from "@/components/FlexBetween";
 import WidgetWrapper from "@/components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { likePost } from "@/redux/postReducer";
+import { commentPost, likePost } from "@/redux/postReducer";
 import Person from "@/components/Person";
+import { toggleSpinner } from "@/redux/spinnerReducer";
 
 const PostWidget = ({ post }) => {
   const [showComments, setShowComments] = useState(false);
+  const [newComment, setNewComment] = useState("");
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const token = auth.token;
@@ -23,11 +33,17 @@ const PostWidget = ({ post }) => {
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
-  const primary = palette.neutral.main;
+  const red = palette.neutral.red;
+
   const handleLike = () => {
     dispatch(likePost(post._id, token));
   };
-  console.log(post.creator);
+  const handleAddComment = (e) => {
+    e.preventDefault();
+    console.log(newComment);
+    dispatch(commentPost(post._id, newComment, token));
+    setNewComment("");
+  };
 
   return (
     <WidgetWrapper m="2rem 0">
@@ -54,7 +70,7 @@ const PostWidget = ({ post }) => {
           <FlexBetween gap="0.3rem">
             <IconButton onClick={handleLike} sx={{ gap: "0.3rem" }}>
               {isLiked ? (
-                <FavoriteOutlined sx={{ color: primary }} />
+                <FavoriteOutlined sx={{ color: red }} />
               ) : (
                 <FavoriteBorderOutlined />
               )}
@@ -77,13 +93,31 @@ const PostWidget = ({ post }) => {
           <ShareOutlined />
         </IconButton>
       </FlexBetween>
-      {showComments && post.comments && (
+      {showComments && (
         <Box mt="0.5rem">
+          <form onSubmit={handleAddComment} style={{ display: "flex" }}>
+            <TextField
+              type="text"
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Add a comment..."
+              fullWidth
+            />
+            <Button
+              type="submit"
+              disabled={!newComment.trim()}
+              variant="contained"
+              sx={{ ml: "7px" }}
+            >
+              Post
+            </Button>
+          </form>
+
           {post.comments.map((comment, i) => (
             <Box key={`${comment._id}-${i}`}>
               <Divider />
               <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment}
+                {comment.comment}
               </Typography>
             </Box>
           ))}

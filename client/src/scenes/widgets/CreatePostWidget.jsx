@@ -16,6 +16,7 @@ import {
   Button,
   IconButton,
   useMediaQuery,
+  CircularProgress,
 } from "@mui/material";
 import FlexBetween from "@/components/FlexBetween";
 import Dropzone from "react-dropzone";
@@ -24,6 +25,7 @@ import WidgetWrapper from "@/components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { newPost } from "@/redux/postReducer";
+import { toggleSpinner } from "@/redux/spinnerReducer";
 
 const CreatePostWidget = ({ profilePath }) => {
   const dispatch = useDispatch();

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const baseUrl = "https://animefreak-backend.onrender.com/posts";
+import { toggleSpinner } from "./spinnerReducer";
 const tokenConfig = (token) => {
   return {
     headers: { Authorization: `Bearer ${token}` },
@@ -28,9 +28,10 @@ const postSlice = createSlice({
 
 export const newPost = (post, token) => {
   return async (dispatch) => {
+    dispatch(toggleSpinner(true));
     try {
       const response = await axios.post(
-        `${baseUrl}/create`,
+        `/posts/create`,
         post,
         tokenConfig(token)
       );
@@ -38,40 +39,76 @@ export const newPost = (post, token) => {
     } catch (e) {
       console.log(e);
       throw new Error(e?.message);
+    } finally {
+      dispatch(toggleSpinner(false));
     }
   };
 };
 
 export const fetchPosts = (token) => {
   return async (dispatch) => {
-    const response = await axios.get(baseUrl, tokenConfig(token));
+    dispatch(toggleSpinner(true));
+    const response = await axios.get("/posts", tokenConfig(token));
     dispatch(setPosts(response.data.posts));
+    dispatch(toggleSpinner(false));
   };
 };
 
 export const fetchUserPosts = (userId, token) => {
   return async (dispatch) => {
-    const response = await axios.get(
-      `${baseUrl}/${userId}`,
-      tokenConfig(token)
-    );
-    dispatch(setPosts(response.data));
+    try {
+      dispatch(toggleSpinner(true));
+      const response = await axios.get(`/posts/${userId}`, tokenConfig(token));
+      dispatch(setPosts(response.data));
+      dispatch(toggleSpinner(false));
+    } catch (e) {
+      throw new Error("Error Fetching Posts");
+    }
   };
 };
 
 export const likePost = (postId, token) => {
   return async (dispatch) => {
+    dispatch(toggleSpinner(true));
     try {
       const response = await axios.patch(
-        `${baseUrl}/${postId}/like`,
+        `/posts/${postId}/like`,
         null,
         tokenConfig(token)
       );
       dispatch(updatePosts(response.data));
     } catch (e) {
       throw new Error(e?.message);
+    } finally {
+      dispatch(toggleSpinner(false));
     }
   };
 };
+
+export const commentPost = (postId, commentContent, token) => {
+  return async (dispatch) => {
+    dispatch(toggleSpinner(true));
+    try {
+      const resp = await axios.post(
+        `/comments/new/${postId}`,
+        { comment: commentContent },
+        tokenConfig(token)
+      );
+      dispatch(updatePosts(resp.data));
+    } catch (e) {
+      throw new Error(e?.message);
+    } finally {
+      dispatch(toggleSpinner(false));
+    }
+  };
+};
+
+export const deletePost = (postId, token) => {
+  return async (dispatch) => {
+    await axios.delete(`/posts/delete/${postId}`);
+    dispatch(fetchPosts(token));
+  };
+};
+
 export const { setPosts, updatePosts, createPost } = postSlice.actions;
 export default postSlice.reducer;
