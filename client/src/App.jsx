@@ -14,7 +14,6 @@ import { setLogin } from "@/redux/authReducer";
 function App() {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
-  const spinner = useSelector((state) => state.spinner);
   const theme = useMemo(
     () => createTheme(themeSettings(auth.mode)),
     [auth.mode]

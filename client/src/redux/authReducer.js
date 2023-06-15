@@ -62,6 +62,8 @@ export const setFriends = (friendId, token) => {
         },
       });
       console.log(response.data);
+      window.localStorage.setItem("loggedUser", JSON.stringify(response.data));
+
       dispatch(updateUser(response.data));
       dispatch(toggleSpinner(false));
     } catch (e) {

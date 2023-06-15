@@ -12,7 +12,13 @@ import {
   useMediaQuery,
   Typography,
   useTheme,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+  FormControl,
 } from "@mui/material";
+import { toggleSpinner } from "@/redux/spinnerReducer";
+import { useDispatch } from "react-redux";
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
@@ -28,6 +34,7 @@ const registerSchema = yup.object().shape({
 const SignUpForm = () => {
   const { palette } = useTheme();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const isNonMobile = useMediaQuery("(min-width: 600px)");
   const initialValuesRegister = {
     firstName: "",
@@ -38,18 +45,26 @@ const SignUpForm = () => {
     location: "",
     bio: "",
     avatar: "",
+    gender: "",
   };
   const registerHandler = async (values) => {
-    const form = new FormData();
-    for (let value in values) {
-      form.append(value, values[value]);
+    dispatch(toggleSpinner(true));
+    try {
+      const form = new FormData();
+      for (let value in values) {
+        form.append(value, values[value]);
+      }
+      const response = await axios.post("/auth/signup", form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      navigate("/");
+    } catch (e) {
+      throw new Error(e?.message);
+    } finally {
+      dispatch(toggleSpinner(false));
     }
-    const response = await axios.post("/auth/signup", form, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    navigate("/");
   };
   return (
     <Formik
@@ -86,7 +101,6 @@ const SignUpForm = () => {
               helperText={touched.firstName && errors.firstName}
               sx={{ gridColumn: "span 2" }}
             />
-
             <TextField
               label="Last Name"
               onBlur={handleBlur}
@@ -129,6 +143,31 @@ const SignUpForm = () => {
               helperText={touched.bio && errors.bio}
               sx={{ gridColumn: "span 4" }}
             />
+            <FormControl component="fieldset" sx={{ gridColumn: "span 4" }}>
+              <RadioGroup
+                row
+                aria-label="gender"
+                name="gender"
+                value={values.gender}
+                onChange={handleChange}
+              >
+                <FormControlLabel
+                  value="MALE"
+                  control={<Radio />}
+                  label="Male"
+                />
+                <FormControlLabel
+                  value="FEMALE"
+                  control={<Radio />}
+                  label="Female"
+                />
+                <FormControlLabel
+                  value="NA"
+                  control={<Radio />}
+                  label="Others"
+                />
+              </RadioGroup>
+            </FormControl>
             <Box
               gridColumn="span 4"
               border={`1px solid ${palette.neutral.medium}`}

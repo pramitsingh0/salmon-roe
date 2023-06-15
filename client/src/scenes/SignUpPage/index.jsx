@@ -7,7 +7,12 @@ const SignUpPage = () => {
   if (spinner) {
     return (
       <Box
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+        sx={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
         <CircularProgress />
       </Box>

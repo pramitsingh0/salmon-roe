@@ -84,5 +84,24 @@ export const likePost = (postId, token) => {
     }
   };
 };
+
+export const commentPost = (postId, commentContent, token) => {
+  return async (dispatch) => {
+    dispatch(toggleSpinner(true));
+    try {
+      const resp = await axios.post(
+        `/comments/new/${postId}`,
+        { comment: commentContent },
+        tokenConfig(token)
+      );
+      dispatch(updatePosts(resp.data));
+    } catch (e) {
+      throw new Error(e?.message);
+    } finally {
+      dispatch(toggleSpinner(false));
+    }
+  };
+};
+
 export const { setPosts, updatePosts, createPost } = postSlice.actions;
 export default postSlice.reducer;
