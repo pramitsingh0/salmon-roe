@@ -103,5 +103,12 @@ export const commentPost = (postId, commentContent, token) => {
   };
 };
 
+export const deletePost = (postId, token) => {
+  return async (dispatch) => {
+    await axios.delete(`/posts/delete/${postId}`);
+    dispatch(fetchPosts(token));
+  };
+};
+
 export const { setPosts, updatePosts, createPost } = postSlice.actions;
 export default postSlice.reducer;

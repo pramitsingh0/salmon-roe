@@ -1,15 +1,10 @@
 import {
+  DeleteSweep,
   EditSharp,
   PersonAddOutlined,
   PersonRemoveOutlined,
 } from "@mui/icons-material";
-import {
-  Box,
-  CircularProgress,
-  IconButton,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
@@ -86,7 +81,7 @@ const Person = ({ personId, name, subtitle, userPicturePath }) => {
               height: "40px",
             }}
           >
-            <EditSharp sx={{ color: primaryDark }} />
+            <DeleteSweep sx={{ color: primaryDark }} />
           </IconButton>
         )}
       </div>
