@@ -19,6 +19,10 @@ Deployed at: https://animefreak.onrender.com
 - HTTP Requests: Axios is used for sending requests to the server, facilitating seamless communication between the frontend and backend.
 - Material UI: The Material UI library is employed to create a visually appealing and responsive theme throughout the web application, ensuring a user-friendly experience across various screen sizes.
 
+## TODO
+- Search for users and post
+- Delete post
+
 ## Installation and Setup
 
 To run the Anime Social Media Site locally, follow these steps:
