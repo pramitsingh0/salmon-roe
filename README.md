@@ -4,6 +4,10 @@ Welcome to the AnimeFreak Social Media Site project! This project is a full-stac
 
 Deployed at: https://animefreak.onrender.com
 
+### Preview
+
+![ezgif com-gif-maker](https://github.com/pramitsingh0/salmon-roe/assets/52959209/94412de0-0cba-41d3-aef1-fff7820dd715)
+
 ## Features
 
 - User Authentication: Users can sign up for an account, log in securely, and log out when done. The passwords are encrypted using bcrypt for enhanced security.
