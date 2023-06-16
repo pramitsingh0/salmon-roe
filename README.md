@@ -1,5 +1,5 @@
 # Anime Freak
-
+[WIP]
 Welcome to the AnimeFreak Social Media Site project! This project is a full-stack web application focused on creating a social media platform for anime enthusiasts. Users can sign up, log in, and interact with posts and comments related to anime. This README provides an overview of the project, its features, and instructions for running and deploying the application.
 
 Deployed at: https://animefreak.onrender.com
@@ -26,6 +26,7 @@ Deployed at: https://animefreak.onrender.com
 ## TODO
 - Search for users and post
 - Delete post
+- Notification
 
 ## Installation and Setup
 
