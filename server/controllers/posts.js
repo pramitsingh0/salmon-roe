@@ -22,9 +22,10 @@ const createPost = async (req, res, next) => {
     };
     if (file) {
       const downloadUrl = await imageUpload(file, creator.username, "post");
-      postObj.imageurl = downloadUrl;
+      postObj.imageUrl = downloadUrl;
     }
     const post = new Post(postObj);
+
     creator.posts.push(post);
     const savedPost = await post.save();
     await creator.save();
