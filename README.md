@@ -1,8 +1,12 @@
 # Anime Freak
-
+[WIP]
 Welcome to the AnimeFreak Social Media Site project! This project is a full-stack web application focused on creating a social media platform for anime enthusiasts. Users can sign up, log in, and interact with posts and comments related to anime. This README provides an overview of the project, its features, and instructions for running and deploying the application.
 
 Deployed at: https://animefreak.onrender.com
+
+### Preview
+
+![ezgif com-gif-maker](https://github.com/pramitsingh0/salmon-roe/assets/52959209/94412de0-0cba-41d3-aef1-fff7820dd715)
 
 ## Features
 
@@ -18,6 +22,11 @@ Deployed at: https://animefreak.onrender.com
 - Routing: React Router is utilized for effective route management, enabling smooth navigation within the application.
 - HTTP Requests: Axios is used for sending requests to the server, facilitating seamless communication between the frontend and backend.
 - Material UI: The Material UI library is employed to create a visually appealing and responsive theme throughout the web application, ensuring a user-friendly experience across various screen sizes.
+
+## TODO
+- Search for users and post
+- Delete post
+- Notification
 
 ## Installation and Setup
 
