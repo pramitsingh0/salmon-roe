@@ -10,6 +10,8 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "@/theme";
 import { setLogin } from "@/redux/authReducer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,6 +41,12 @@ function App() {
           <Route path="/profile/:userId" element={<ProfilePage />} />
         </Routes>
       </ThemeProvider>
+      <ToastContainer
+        autoClose={3000}
+        closeOnClick
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 }

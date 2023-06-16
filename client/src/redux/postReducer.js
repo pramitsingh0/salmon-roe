@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toggleSpinner } from "./spinnerReducer";
+import { toast } from "react-toastify";
 const tokenConfig = (token) => {
   return {
     headers: { Authorization: `Bearer ${token}` },
@@ -36,8 +37,10 @@ export const newPost = (post, token) => {
         tokenConfig(token)
       );
       dispatch(createPost(response.data));
+      toast.success("Post created succefully");
     } catch (e) {
       console.log(e);
+      toast.error("Internal Server Error in adding the posts");
       throw new Error(e?.message);
     } finally {
       dispatch(toggleSpinner(false));
@@ -47,10 +50,15 @@ export const newPost = (post, token) => {
 
 export const fetchPosts = (token) => {
   return async (dispatch) => {
-    dispatch(toggleSpinner(true));
-    const response = await axios.get("/posts", tokenConfig(token));
-    dispatch(setPosts(response.data.posts));
-    dispatch(toggleSpinner(false));
+    try {
+      dispatch(toggleSpinner(true));
+      const response = await axios.get("/posts", tokenConfig(token));
+      dispatch(setPosts(response.data.posts));
+      dispatch(toggleSpinner(false));
+    } catch (e) {
+      toast.error("Error fetching posts from the server. Try Again");
+      throw new Error(e?.message);
+    }
   };
 };
 
@@ -77,7 +85,9 @@ export const likePost = (postId, token) => {
         tokenConfig(token)
       );
       dispatch(updatePosts(response.data));
+      toast.success(`Toggeld like on post '${response.data.caption}'`);
     } catch (e) {
+      toast.error("Error liking the post");
       throw new Error(e?.message);
     } finally {
       dispatch(toggleSpinner(false));
@@ -95,7 +105,9 @@ export const commentPost = (postId, commentContent, token) => {
         tokenConfig(token)
       );
       dispatch(updatePosts(resp.data));
+      toast.success("Comment posted!");
     } catch (e) {
+      toast.error("Error creating the comment");
       throw new Error(e?.message);
     } finally {
       dispatch(toggleSpinner(false));

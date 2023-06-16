@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toggleSpinner } from "./spinnerReducer";
+import { toast } from "react-toastify";
 
 const initialState = {
   mode: "light",
@@ -25,6 +26,7 @@ const authSlice = createSlice({
     setLogout: (state) => {
       (state.user = null), (state.token = null);
       window.localStorage.clear();
+      toast.success("Logged Out successfully");
     },
   },
 });
@@ -46,6 +48,8 @@ export const loginUser = (email, password) => {
       );
       window.localStorage.setItem("token", JSON.stringify(response.data.token));
     } catch (e) {
+      console.log(e);
+      toast.error("Invalid Credentials");
       throw new Error(e.message);
     } finally {
       dispatch(toggleSpinner(false));
@@ -66,8 +70,10 @@ export const setFriends = (friendId, token) => {
 
       dispatch(updateUser(response.data));
       dispatch(toggleSpinner(false));
+      toast.success("Added to friends");
     } catch (e) {
-      throw new Error("Error toggling follow unfollow");
+      toast.error("Error adding to friends");
+      throw new Error(e.message);
     }
   };
 };

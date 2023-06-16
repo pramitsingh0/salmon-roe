@@ -5,6 +5,7 @@ import FlexBetween from "@/components/FlexBetween";
 import { Formik } from "formik";
 import * as yup from "yup";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { toast } from "react-toastify";
 import {
   Box,
   Button,
@@ -59,8 +60,11 @@ const SignUpForm = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+      toast.success("account created successfully!");
       navigate("/");
     } catch (e) {
+      toast.error("Error creating your account");
+      navigate("/signup");
       throw new Error(e?.message);
     } finally {
       dispatch(toggleSpinner(false));
